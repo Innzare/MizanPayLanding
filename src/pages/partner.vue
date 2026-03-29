@@ -12,6 +12,7 @@ const firstName = ref('')
 const lastName = ref('')
 const patronymic = ref('')
 const phone = ref('')
+const email = ref('')
 const city = ref('')
 
 // Step 2: Business info
@@ -52,10 +53,13 @@ const capitalOptions = [
   'Более 1 000 000 ₽',
 ]
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 const step1Valid = computed(() =>
   firstName.value.length >= 2 &&
   lastName.value.length >= 2 &&
   phone.value.length >= 10 &&
+  emailRegex.test(email.value) &&
   city.value !== ''
 )
 
@@ -89,6 +93,7 @@ async function submit() {
       lastName: lastName.value,
       patronymic: patronymic.value,
       phone: phone.value,
+      email: email.value,
       city: city.value,
       experience: experience.value,
       capital: capital.value,
@@ -202,7 +207,16 @@ async function submit() {
                       :rules="[v => v.length >= 10 || 'Введите номер телефона']"
                     />
                   </v-col>
-                  <v-col cols="12">
+                  <v-col cols="12" sm="6">
+                    <v-text-field
+                      v-model="email"
+                      label="Email"
+                      placeholder="example@mail.ru"
+                      type="email"
+                      :rules="[v => emailRegex.test(v) || 'Введите корректный email']"
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="6">
                     <v-select
                       v-model="city"
                       :items="cities"
