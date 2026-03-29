@@ -27,8 +27,16 @@
         <v-col cols="6" md="2">
           <div class="footer-heading">Партнёрам</div>
           <div class="d-flex flex-column ga-2">
-            <router-link to="/partner" class="footer-link">Стать партнёром</router-link>
+            <router-link to="/partner" class="footer-link">Стать инвестором</router-link>
             <a href="#for-investors" class="footer-link">Преимущества</a>
+          </div>
+        </v-col>
+
+        <v-col cols="6" md="2">
+          <div class="footer-heading">Информация</div>
+          <div class="d-flex flex-column ga-2">
+            <router-link to="/support" class="footer-link">Поддержка</router-link>
+            <router-link to="/privacy" class="footer-link">Конфиденциальность</router-link>
           </div>
         </v-col>
 
