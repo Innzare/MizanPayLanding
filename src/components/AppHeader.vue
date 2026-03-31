@@ -15,10 +15,8 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   <header class="floating-header">
     <div class="header-inner">
       <router-link to="/" class="d-flex align-center text-decoration-none">
-        <v-icon icon="mdi-scale-balance" color="primary" size="32" class="mr-2" />
-        <span class="logo-text">
-          Mizan<span class="text-primary">Pay</span>
-        </span>
+        <img src="@/assets/images/logo.svg" alt="MizanPay" class="header-logo" />
+        <img src="@/assets/images/logo-text.svg" alt="MizanPay" class="header-logo-text" />
       </router-link>
 
       <router-link to="/partner" class="cta-link d-none d-sm-flex">
@@ -110,11 +108,15 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.logo-text {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #0f172a;
-  letter-spacing: -0.02em;
+.header-logo {
+  height: 32px;
+  width: auto;
+  margin-right: 8px;
+}
+
+.header-logo-text {
+  height: 28px;
+  width: auto;
 }
 
 .cta-link {

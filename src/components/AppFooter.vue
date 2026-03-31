@@ -4,10 +4,8 @@
       <v-row>
         <v-col cols="12" md="4">
           <div class="d-flex align-center mb-4">
-            <v-icon icon="mdi-scale-balance" color="white" size="24" class="mr-2" />
-            <span class="footer-logo">
-              Mizan<span style="color: #34d399">Pay</span>
-            </span>
+            <img src="@/assets/images/logo.svg" alt="MizanPay" class="footer-logo-icon" />
+            <img src="@/assets/images/logo-text.svg" alt="MizanPay" class="footer-logo-text" />
           </div>
           <p class="footer-desc">
             Маркетплейс халяльной рассрочки. Покупайте товары в рассрочку
@@ -85,11 +83,17 @@
   padding: 64px 0 32px;
 }
 
-.footer-logo {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: -0.01em;
+.footer-logo-icon {
+  height: 28px;
+  width: auto;
+  margin-right: 8px;
+  filter: brightness(0) invert(1);
+}
+
+.footer-logo-text {
+  height: 18px;
+  width: auto;
+  filter: brightness(0) invert(1);
 }
 
 .footer-desc {
