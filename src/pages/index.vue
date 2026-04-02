@@ -2,6 +2,7 @@
   <div>
     <SectionNav />
     <HeroSection />
+    <PainSection />
     <FeaturesSection />
     <HowItWorksSection />
     <CalculatorSection />

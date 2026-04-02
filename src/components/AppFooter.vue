@@ -8,9 +8,24 @@
             <img src="@/assets/images/logo-text.svg" alt="MizanPay" class="footer-logo-text" />
           </div>
           <p class="footer-desc">
-            Маркетплейс халяльной рассрочки. Покупайте товары в рассрочку
-            по принципам исламских финансов — без процентов.
+            Платформа для инвесторов, которые продают товары в рассрочку
+            по принципу мурабахи — без процентов.
           </p>
+
+          <div class="footer-store-links">
+            <a href="#" class="footer-store-badge">
+              <v-icon icon="mdi-apple" size="18" />
+              <span>App Store</span>
+            </a>
+            <a href="#" class="footer-store-badge">
+              <v-icon icon="mdi-google-play" size="18" />
+              <span>Google Play</span>
+            </a>
+            <a href="https://partner.mizan-pay.ru" target="_blank" class="footer-store-badge">
+              <v-icon icon="mdi-monitor" size="18" />
+              <span>Веб-версия</span>
+            </a>
+          </div>
         </v-col>
 
         <v-col cols="6" md="2">
@@ -101,6 +116,32 @@
   line-height: 1.7;
   color: #94a3b8;
   max-width: 300px;
+}
+
+.footer-store-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.footer-store-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.footer-store-badge:hover {
+  border-color: #34d399;
+  color: #34d399;
 }
 
 .footer-heading {

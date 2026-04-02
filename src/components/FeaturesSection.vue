@@ -4,10 +4,10 @@
       <div class="text-center mb-14 animate-fade-in-up">
         <div class="section-chip mb-4">Возможности</div>
         <h2 class="section-title mb-3">
-          Всё для <span class="text-gradient">удобной рассрочки</span>
+          Всё что нужно <span class="text-gradient">инвестору</span>
         </h2>
         <p class="section-subtitle">
-          Прозрачная платформа, где покупатели и рассрочкадатели находят друг друга
+          Автоматизируйте учёт и контролируйте каждую сделку
         </p>
       </div>
 
@@ -37,46 +37,46 @@
 <script lang="ts" setup>
 const features = [
   {
-    icon: 'mdi-percent-circle-outline',
+    icon: 'mdi-handshake',
     color: '#047857',
     bg: '#f0fdf4',
-    title: '0% — без процентов',
-    description: 'Фиксированная наценка (мурабаха) вместо переменного процента. Вы знаете итоговую сумму с первого дня.',
+    title: 'Создание сделок',
+    description: 'Оформите сделку за минуту: товар, условия, клиент. Даже если клиент не на платформе.',
   },
   {
-    icon: 'mdi-shield-check-outline',
+    icon: 'mdi-calendar-check',
     color: '#0f766e',
     bg: '#f0fdfa',
-    title: 'Безопасные сделки',
-    description: 'Система рейтингов, верификация участников и прозрачная история платежей.',
+    title: 'График платежей',
+    description: 'Автоматический расчёт равных или убывающих платежей с учётом первоначального взноса.',
   },
   {
-    icon: 'mdi-calculator-variant-outline',
+    icon: 'mdi-message-text-clock',
     color: '#7c3aed',
     bg: '#f5f3ff',
-    title: 'Умный калькулятор',
-    description: '4 режима расчёта: базовый, расширенный, обратный и портфельный — для точного планирования.',
-  },
-  {
-    icon: 'mdi-cellphone-check',
-    color: '#2563eb',
-    bg: '#eff6ff',
-    title: 'Мобильное приложение',
-    description: 'Управляйте сделками, платежами и заявками прямо с телефона. iOS и Android.',
-  },
-  {
-    icon: 'mdi-bell-ring-outline',
-    color: '#d97706',
-    bg: '#fffbeb',
-    title: 'Уведомления',
-    description: 'Push-уведомления о платежах, новых заявках и изменениях статуса сделок.',
+    title: 'Напоминания',
+    description: 'Отправляйте напоминания клиентам через WhatsApp одной кнопкой с готовым текстом.',
   },
   {
     icon: 'mdi-chart-line',
+    color: '#2563eb',
+    bg: '#eff6ff',
+    title: 'Аналитика',
+    description: 'Выручка, прибыль, ROI — всё на одном дашборде. Контролируйте портфель.',
+  },
+  {
+    icon: 'mdi-store',
+    color: '#d97706',
+    bg: '#fffbeb',
+    title: 'Каталог товаров',
+    description: 'Публикуйте товары — клиенты сами отправляют заявки на рассрочку.',
+  },
+  {
+    icon: 'mdi-cellphone',
     color: '#059669',
     bg: '#ecfdf5',
-    title: 'Аналитика',
-    description: 'Dashboard с KPI: инвестировано, прибыль, ROI, ежемесячный доход — всё в одном месте.',
+    title: 'Мобильное приложение',
+    description: 'Управляйте сделками с телефона. Создавайте, отслеживайте, получайте уведомления.',
   },
 ]
 </script>

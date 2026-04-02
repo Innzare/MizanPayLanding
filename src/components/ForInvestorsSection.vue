@@ -1,98 +1,96 @@
 <template>
   <section id="for-investors" class="section-padding bg-gradient-light">
     <v-container>
-      <v-row align="center">
-        <v-col cols="12" md="6" class="animate-fade-in-up">
-          <div class="section-chip mb-5">Для рассрочкадателей</div>
-          <h2 class="section-title mb-4">
-            Зарабатывайте на <span class="text-gradient">халяльной рассрочке</span>
-          </h2>
-          <p class="text-body-1 text-muted-custom mb-8" style="max-width: 480px; line-height: 1.7">
-            Инвестируйте свой капитал по принципам исламских финансов.
-            Фиксированная прибыль, управляемые риски, автоматизация процессов.
-          </p>
+      <div class="text-center mb-14 animate-fade-in-up">
+        <div class="section-chip mb-4">Инструменты</div>
+        <h2 class="section-title mb-3">
+          Мощные инструменты для <span class="text-gradient">вашего бизнеса</span>
+        </h2>
+        <p class="section-subtitle">
+          Реальные скриншоты платформы — то, что вы получите после регистрации
+        </p>
+      </div>
 
-          <div class="d-flex flex-column ga-5 mb-10">
-            <div v-for="(benefit, i) in benefits" :key="i" class="benefit-item">
-              <div class="benefit-icon">
-                <v-icon :icon="benefit.icon" color="primary" size="20" />
-              </div>
-              <div>
-                <div class="text-subtitle-2 font-weight-bold mb-1">{{ benefit.title }}</div>
-                <div class="text-body-2 text-muted-custom" style="line-height: 1.6">{{ benefit.text }}</div>
-              </div>
-            </div>
+      <!-- Block 1: screenshot left, text right -->
+      <v-row align="center" class="showcase-block mb-16">
+        <v-col cols="12" md="7" class="animate-fade-in-up">
+          <div class="screenshot-card screenshot-card--left">
+            <img :src="dealsList" alt="Портфель сделок" class="screenshot-img" />
           </div>
-
-          <v-btn
-            to="/partner"
-            color="primary"
-            size="x-large"
-            class="text-none px-8"
-            rounded="pill"
-          >
-            Подать заявку
-            <v-icon icon="mdi-arrow-right" class="ml-2" />
-          </v-btn>
         </v-col>
-
-        <v-col cols="12" md="6" class="animate-fade-in-up delay-3">
-          <!-- Dashboard preview -->
-          <div class="dashboard-preview">
-            <div class="dashboard-header">
-              <div class="d-flex align-center ga-2">
-                <v-icon icon="mdi-view-dashboard-outline" size="18" color="primary" />
-                <span class="text-body-2 font-weight-bold">Панель инвестора</span>
-              </div>
-              <div class="dashboard-dots">
-                <span /><span /><span />
-              </div>
+        <v-col cols="12" md="5" class="animate-fade-in-up delay-2">
+          <div class="showcase-text">
+            <div class="showcase-icon-wrap mb-4">
+              <v-icon icon="mdi-briefcase-outline" color="primary" size="24" />
             </div>
+            <h3 class="showcase-title mb-3">Портфель сделок</h3>
+            <p class="showcase-desc">
+              Все ваши сделки в одном месте. Фильтруйте по статусу,
+              отслеживайте прогресс платежей, контролируйте остатки.
+            </p>
+          </div>
+        </v-col>
+      </v-row>
 
-            <v-row dense class="mb-4">
-              <v-col cols="6">
-                <div class="metric-card metric-primary">
-                  <div class="metric-label">Инвестировано</div>
-                  <div class="metric-value">564 980 &#8381;</div>
-                </div>
-              </v-col>
-              <v-col cols="6">
-                <div class="metric-card">
-                  <div class="metric-label">Прибыль</div>
-                  <div class="metric-value text-primary">97 998 &#8381;</div>
-                </div>
-              </v-col>
-              <v-col cols="6">
-                <div class="metric-card">
-                  <div class="metric-label">ROI</div>
-                  <div class="metric-value">17.3%</div>
-                </div>
-              </v-col>
-              <v-col cols="6">
-                <div class="metric-card">
-                  <div class="metric-label">Доход/мес</div>
-                  <div class="metric-value text-primary">36 415 &#8381;</div>
-                </div>
-              </v-col>
-            </v-row>
-
-            <div class="payments-section">
-              <div class="text-caption font-weight-bold text-muted-custom mb-3" style="text-transform: uppercase; letter-spacing: 0.05em">
-                Ближайшие платежи
-              </div>
-              <div v-for="(payment, i) in payments" :key="i" class="payment-row">
-                <div class="d-flex align-center ga-3">
-                  <div class="payment-avatar" :style="{ background: payment.bg }">
-                    <v-icon :icon="payment.icon" size="14" :color="payment.color" />
-                  </div>
-                  <div>
-                    <div class="text-body-2 font-weight-bold">{{ payment.name }}</div>
-                    <div class="text-caption text-muted-custom">{{ payment.date }}</div>
-                  </div>
-                </div>
-                <div class="text-body-2 font-weight-bold">{{ payment.amount }}</div>
-              </div>
+      <!-- Block 2: text left, screenshot right -->
+      <v-row align="center" class="showcase-block mb-16 flex-md-row-reverse">
+        <v-col cols="12" md="7" class="animate-fade-in-up">
+          <div class="screenshot-card screenshot-card--right">
+            <img :src="newDeal" alt="Создание сделки" class="screenshot-img" />
+          </div>
+        </v-col>
+        <v-col cols="12" md="5" class="animate-fade-in-up delay-2">
+          <div class="showcase-text">
+            <div class="showcase-icon-wrap mb-4">
+              <v-icon icon="mdi-plus-circle-outline" color="primary" size="24" />
             </div>
+            <h3 class="showcase-title mb-3">Создание сделки за минуту</h3>
+            <p class="showcase-desc">
+              Пошаговый визард: укажите товар, условия рассрочки и данные клиента.
+              График платежей сформируется автоматически. Клиент не обязан быть на платформе.
+            </p>
+          </div>
+        </v-col>
+      </v-row>
+
+      <!-- Block 3: screenshot left, text right -->
+      <v-row align="center" class="showcase-block mb-16">
+        <v-col cols="12" md="7" class="animate-fade-in-up">
+          <div class="screenshot-card screenshot-card--left">
+            <img :src="paymentsCalendar" alt="Контроль платежей" class="screenshot-img" />
+          </div>
+        </v-col>
+        <v-col cols="12" md="5" class="animate-fade-in-up delay-2">
+          <div class="showcase-text">
+            <div class="showcase-icon-wrap mb-4">
+              <v-icon icon="mdi-calendar-month-outline" color="primary" size="24" />
+            </div>
+            <h3 class="showcase-title mb-3">Контроль платежей</h3>
+            <p class="showcase-desc">
+              Таблица и календарь платежей. Видите кто платит вовремя, а кто задерживает.
+              Отмечайте оплату, прикладывайте скриншоты подтверждения.
+            </p>
+          </div>
+        </v-col>
+      </v-row>
+
+      <!-- Block 4: text left, screenshot right -->
+      <v-row align="center" class="showcase-block flex-md-row-reverse">
+        <v-col cols="12" md="7" class="animate-fade-in-up">
+          <div class="screenshot-card screenshot-card--right">
+            <img :src="chart" alt="Аналитика и прогнозы" class="screenshot-img" />
+          </div>
+        </v-col>
+        <v-col cols="12" md="5" class="animate-fade-in-up delay-2">
+          <div class="showcase-text">
+            <div class="showcase-icon-wrap mb-4">
+              <v-icon icon="mdi-chart-line" color="primary" size="24" />
+            </div>
+            <h3 class="showcase-title mb-3">Аналитика и прогнозы</h3>
+            <p class="showcase-desc">
+              Поступления за 6 месяцев, прогноз доходов, ROI, ежемесячный доход —
+              принимайте решения на основе данных.
+            </p>
           </div>
         </v-col>
       </v-row>
@@ -101,125 +99,100 @@
 </template>
 
 <script lang="ts" setup>
-const benefits = [
-  { icon: 'mdi-briefcase-outline', title: 'Портфель сделок', text: 'Управляйте десятками сделок одновременно через веб-панель или приложение' },
-  { icon: 'mdi-cog-outline', title: 'Автоматизация', text: 'Автогенерация графиков платежей, уведомления о просрочках, аналитика' },
-  { icon: 'mdi-star-outline', title: 'Рейтинговая система', text: 'Оценивайте надёжность клиентов по истории платежей и рейтингу' },
-  { icon: 'mdi-book-open-page-variant-outline', title: 'Халяль-соответствие', text: 'Фиксированная наценка, товар в собственности до продажи, без штрафов-прибыли' },
-]
-
-const payments = [
-  { name: 'Ахмад И.', date: '15 марта', amount: '11 748 ₽', icon: 'mdi-cellphone', color: '#047857', bg: '#f0fdf4' },
-  { name: 'Муса Д.', date: '18 марта', amount: '10 791 ₽', icon: 'mdi-laptop', color: '#d97706', bg: '#fffbeb' },
-  { name: 'Хасан М.', date: '22 марта', amount: '18 667 ₽', icon: 'mdi-cellphone', color: '#0f766e', bg: '#f0fdfa' },
-]
+import dealsList from '@/assets/images/deals-list.png'
+import newDeal from '@/assets/images/new-deal.png'
+import paymentsCalendar from '@/assets/images/payments-calendar.png'
+import chart from '@/assets/images/chart.png'
 </script>
 
 <style scoped>
-.benefit-item {
-  display: flex;
-  gap: 16px;
+.screenshot-card {
+  background: #ffffff;
+  border: 1px solid #e2efe8;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 8px 32px rgba(4, 120, 87, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.4s ease;
 }
 
-.benefit-icon {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  border-radius: 10px;
+.screenshot-card:hover {
+  box-shadow:
+    0 16px 48px rgba(4, 120, 87, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+  transform: translateY(-4px);
+}
+
+.screenshot-card--left {
+  transform: perspective(1200px) rotateY(2deg);
+}
+
+.screenshot-card--left:hover {
+  transform: perspective(1200px) rotateY(0deg) translateY(-4px);
+}
+
+.screenshot-card--right {
+  transform: perspective(1200px) rotateY(-2deg);
+}
+
+.screenshot-card--right:hover {
+  transform: perspective(1200px) rotateY(0deg) translateY(-4px);
+}
+
+.screenshot-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.showcase-text {
+  padding: 0 16px;
+}
+
+@media (min-width: 960px) {
+  .showcase-text {
+    padding: 0 32px;
+  }
+}
+
+.showcase-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   background: #f0fdf4;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.dashboard-preview {
-  background: #ffffff;
-  border: 1px solid #d1e7db;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 8px 32px rgba(4, 120, 87, 0.06);
-}
-
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #e2efe8;
-}
-
-.dashboard-dots {
-  display: flex;
-  gap: 4px;
-}
-
-.dashboard-dots span {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #cbd5e1;
-}
-
-.metric-card {
-  background: #fafdfb;
-  border: 1px solid #e2efe8;
-  border-radius: 12px;
-  padding: 14px 16px;
-}
-
-.metric-card.metric-primary {
-  background: #047857;
-  border-color: #047857;
-}
-
-.metric-primary .metric-label {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.metric-primary .metric-value {
-  color: #ffffff;
-}
-
-.metric-label {
-  font-size: 0.7rem;
-  color: #5f7a6b;
-  margin-bottom: 4px;
-}
-
-.metric-value {
-  font-size: 1rem;
+.showcase-title {
+  font-size: 1.5rem;
   font-weight: 800;
-  color: #1a2e23;
+  color: #0c1a12;
   letter-spacing: -0.02em;
 }
 
-.payments-section {
-  margin-top: 4px;
+.showcase-desc {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #5f7a6b;
 }
 
-.payment-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #f0fdf4;
-}
+@media (max-width: 959px) {
+  .screenshot-card--left,
+  .screenshot-card--right {
+    transform: none;
+  }
 
-.payment-row:last-child {
-  border-bottom: none;
-}
+  .screenshot-card--left:hover,
+  .screenshot-card--right:hover {
+    transform: translateY(-4px);
+  }
 
-.payment-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.text-primary {
-  color: #047857 !important;
+  .showcase-text {
+    margin-top: 24px;
+    padding: 0;
+  }
 }
 </style>

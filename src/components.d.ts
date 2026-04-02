@@ -19,6 +19,7 @@ declare module 'vue' {
     ForInvestorsSection: typeof import('./components/ForInvestorsSection.vue')['default']
     HeroSection: typeof import('./components/HeroSection.vue')['default']
     HowItWorksSection: typeof import('./components/HowItWorksSection.vue')['default']
+    PainSection: typeof import('./components/PainSection.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SectionNav: typeof import('./components/SectionNav.vue')['default']
