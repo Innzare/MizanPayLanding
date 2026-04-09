@@ -27,6 +27,13 @@
           </div>
         </v-col>
       </v-row>
+
+      <div class="text-center mt-12 animate-fade-in-up">
+        <v-btn to="/partner" color="primary" size="large" class="text-none px-8" rounded="pill">
+          Начать работу
+          <v-icon icon="mdi-arrow-right" class="ml-2" />
+        </v-btn>
+      </div>
     </v-container>
   </section>
 </template>

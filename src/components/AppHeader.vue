@@ -60,7 +60,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
       />
       <v-list-item
         href="#for-investors"
-        title="Для инвесторов"
+        title="Для партнёров"
         @click="drawer = false"
       />
       <v-divider class="my-2" />

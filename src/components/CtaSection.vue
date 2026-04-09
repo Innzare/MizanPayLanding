@@ -12,7 +12,7 @@
                 Начните зарабатывать на рассрочке
               </h2>
               <p class="cta-subtitle mb-8">
-                Зарегистрируйтесь как инвестор и получите полный контроль
+                Зарегистрируйте компанию и получите полный контроль
                 над вашими сделками
               </p>
 
@@ -25,17 +25,19 @@
                   style="color: #047857"
                   rounded="pill"
                 >
-                  Стать партнёром
+                  Зарегистрировать компанию
                   <v-icon icon="mdi-arrow-right" class="ml-2" />
                 </v-btn>
                 <v-btn
+                  href="https://partner.mizan-pay.ru"
+                  target="_blank"
                   size="x-large"
                   variant="outlined"
                   color="white"
                   class="text-none px-8"
                   rounded="pill"
                 >
-                  Посмотреть демо
+                  Войти в кабинет
                 </v-btn>
               </div>
             </div>

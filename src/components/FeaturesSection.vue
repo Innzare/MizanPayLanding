@@ -4,7 +4,7 @@
       <div class="text-center mb-14 animate-fade-in-up">
         <div class="section-chip mb-4">Возможности</div>
         <h2 class="section-title mb-3">
-          Всё что нужно <span class="text-gradient">инвестору</span>
+          Всё что нужно <span class="text-gradient">вашему бизнесу</span>
         </h2>
         <p class="section-subtitle">
           Автоматизируйте учёт и контролируйте каждую сделку

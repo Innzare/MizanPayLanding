@@ -10,7 +10,7 @@
         <v-col cols="12" md="6" class="animate-fade-in-up">
           <div class="section-chip mb-5">
             <v-icon icon="mdi-star-four-points" size="14" class="mr-1" color="primary" />
-            Платформа для инвесторов
+            Платформа для бизнеса
           </div>
 
           <h1 class="hero-title mb-5">
@@ -19,7 +19,7 @@
           </h1>
 
           <p class="hero-subtitle mb-8">
-            MizanPay — платформа для инвесторов, которые продают товары в рассрочку
+            MizanPay — платформа для компаний, которые продают товары в рассрочку
             по принципу мурабахи. Учёт сделок, графики платежей, напоминания — всё в одном месте.
           </p>
 
@@ -31,7 +31,7 @@
               class="text-none px-8"
               rounded="pill"
             >
-              Стать партнёром
+              Зарегистрировать компанию
               <v-icon icon="mdi-arrow-right" class="ml-2" />
             </v-btn>
             <v-btn

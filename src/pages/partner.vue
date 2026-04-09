@@ -1,13 +1,19 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 
 const step = ref(1)
 const loading = ref(false)
 const submitted = ref(false)
 const error = ref('')
+const mounted = ref(false)
+
+onMounted(() => {
+  requestAnimationFrame(() => { mounted.value = true })
+})
 
 // Step 1: Personal info
+const companyName = ref('')
 const firstName = ref('')
 const lastName = ref('')
 const patronymic = ref('')
@@ -54,7 +60,7 @@ const capitalOptions = [
 ]
 
 const steps = [
-  { num: 1, label: 'Личные данные', icon: 'mdi-account-outline' },
+  { num: 1, label: 'О компании', icon: 'mdi-domain' },
   { num: 2, label: 'Опыт', icon: 'mdi-briefcase-outline' },
   { num: 3, label: 'Документы', icon: 'mdi-file-document-outline' },
 ]
@@ -79,6 +85,8 @@ const step3Valid = computed(() =>
   agreement.value
 )
 
+const progressPercent = computed(() => ((step.value - 1) / 2) * 100)
+
 function nextStep() {
   if (step.value < 3) step.value++
 }
@@ -95,6 +103,7 @@ async function submit() {
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
 
     await axios.post(`${API_URL}/partner-applications`, {
+      companyName: companyName.value || undefined,
       firstName: firstName.value,
       lastName: lastName.value,
       patronymic: patronymic.value,
@@ -124,53 +133,58 @@ async function submit() {
 </script>
 
 <template>
-  <div class="partner-page">
-    <div class="page-bg" />
-    <div class="page-glow page-glow--1" />
-    <div class="page-glow page-glow--2" />
+  <div class="partner-page" :class="{ 'is-mounted': mounted }">
+    <!-- Atmospheric background -->
+    <div class="page-atmosphere">
+      <div class="atm-orb atm-orb--1" />
+      <div class="atm-orb atm-orb--2" />
+      <div class="atm-orb atm-orb--3" />
+      <div class="atm-grid" />
+    </div>
 
     <v-container class="position-relative" style="z-index: 1">
       <v-row justify="center" style="min-height: 100vh; padding-top: 100px; padding-bottom: 60px">
-        <v-col cols="12" md="10" lg="8" xl="7">
+        <v-col cols="12" sm="10" md="7" lg="6" xl="5">
 
           <!-- Success state -->
-          <transition name="fade-up" mode="out-in">
-            <div v-if="submitted" class="success-card">
-              <div class="success-icon-wrap">
-                <v-icon icon="mdi-check" size="36" color="white" />
+          <div v-if="submitted" class="success-card stagger-1">
+            <div class="success-ring">
+              <div class="success-ring-inner">
+                <v-icon icon="mdi-check" size="32" color="white" />
               </div>
-              <h2 class="text-h4 font-weight-bold mt-6 mb-3" style="color: #0c1a12">Заявка отправлена!</h2>
-              <p class="text-body-1 mb-8" style="color: #5f7a6b; max-width: 420px; margin: 0 auto; line-height: 1.7">
-                Мы рассмотрим вашу заявку в течение 1-3 рабочих дней и свяжемся с вами по указанному номеру телефона.
-              </p>
-              <v-btn to="/" color="primary" variant="flat" class="text-none px-8" rounded="pill" size="large">
-                На главную
-              </v-btn>
             </div>
-          </transition>
+            <h2 class="success-title">Заявка отправлена</h2>
+            <p class="success-text">
+              Мы рассмотрим вашу заявку в течение 1–3 рабочих дней<br>
+              и свяжемся с вами по указанному номеру телефона
+            </p>
+            <v-btn to="/" color="primary" variant="flat" class="text-none px-8 btn-press" rounded="pill" size="large">
+              На главную
+            </v-btn>
+          </div>
 
           <!-- Form -->
           <template v-if="!submitted">
             <!-- Header -->
-            <div class="text-center mb-10">
+            <div class="text-center stagger-1">
               <div class="section-chip mb-5">
-                <v-icon icon="mdi-handshake-outline" size="14" class="mr-1" color="primary" />
-                Партнёрство
+                <v-icon icon="mdi-domain" size="14" class="mr-1" color="primary" />
+                Регистрация компании
               </div>
               <h1 class="page-title mb-4">
-                Стать <span class="text-gradient">инвестором</span>
+                Зарегистрируйте <span class="text-gradient">компанию</span>
               </h1>
               <p class="page-subtitle">
-                Заполните заявку и начните зарабатывать на халяльной рассрочке
+                Заполните заявку от лица компании и получите доступ к платформе для управления рассрочками
               </p>
             </div>
 
             <!-- Stepper -->
-            <div class="stepper-wrap mb-8">
+            <div class="stepper-wrap stagger-2">
               <div class="stepper">
                 <template v-for="(s, i) in steps" :key="s.num">
                   <button
-                    class="step-item"
+                    class="step-item btn-press"
                     :class="{
                       'step-item--active': step === s.num,
                       'step-item--done': step > s.num,
@@ -190,96 +204,101 @@ async function submit() {
                   />
                 </template>
               </div>
+              <!-- Progress bar under stepper -->
+              <div class="stepper-progress">
+                <div class="stepper-progress-fill" :style="{ width: progressPercent + '%' }" />
+              </div>
             </div>
 
             <!-- Form Card -->
-            <div class="form-card">
-              <transition name="slide-fade" mode="out-in">
+            <div class="form-card stagger-3">
+              <transition name="step-transition" mode="out-in">
                 <!-- Step 1: Personal info -->
                 <div v-if="step === 1" key="step1">
                   <div class="step-header">
                     <div class="step-header-icon">
-                      <v-icon icon="mdi-account-outline" size="20" color="primary" />
+                      <v-icon icon="mdi-domain" size="20" color="primary" />
                     </div>
                     <div>
-                      <h3 class="step-title">Личные данные</h3>
-                      <p class="step-desc">Расскажите немного о себе</p>
+                      <h3 class="step-title">Данные компании</h3>
+                      <p class="step-desc">Контактное лицо и город присутствия</p>
                     </div>
+                    <div class="step-counter">1 / 3</div>
                   </div>
 
-                  <v-row>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="lastName"
-                        label="Фамилия"
-                        placeholder="Хаджиев"
-                        variant="outlined"
-                        density="comfortable"
-                        rounded="lg"
-                        :rules="[v => v.length >= 2 || 'Минимум 2 символа']"
-                      />
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="firstName"
-                        label="Имя"
-                        placeholder="Мухаммад"
-                        variant="outlined"
-                        density="comfortable"
-                        rounded="lg"
-                        :rules="[v => v.length >= 2 || 'Минимум 2 символа']"
-                      />
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="patronymic"
-                        label="Отчество"
-                        placeholder="Ахмедович"
-                        variant="outlined"
-                        density="comfortable"
-                        rounded="lg"
-                        hint="Необязательно"
-                        persistent-hint
-                      />
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-select
-                        v-model="city"
-                        :items="cities"
-                        label="Город"
-                        placeholder="Выберите город"
-                        variant="outlined"
-                        density="comfortable"
-                        rounded="lg"
-                        :rules="[v => !!v || 'Выберите город']"
-                      />
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="phone"
-                        label="Телефон"
-                        placeholder="+7 (928) 000-00-00"
-                        variant="outlined"
-                        density="comfortable"
-                        rounded="lg"
-                        prepend-inner-icon="mdi-phone-outline"
-                        :rules="[v => v.length >= 10 || 'Введите номер телефона']"
-                      />
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="email"
-                        label="Email"
-                        placeholder="example@mail.ru"
-                        type="email"
-                        variant="outlined"
-                        density="comfortable"
-                        rounded="lg"
-                        prepend-inner-icon="mdi-email-outline"
-                        :rules="[v => emailRegex.test(v) || 'Введите корректный email']"
-                      />
-                    </v-col>
-                  </v-row>
+                  <div class="form-fields">
+                    <v-text-field
+                      v-model="companyName"
+                      label="Название компании"
+                      placeholder="ООО «Мизан»"
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      hint="Необязательно"
+                      persistent-hint
+                      prepend-inner-icon="mdi-domain"
+                    />
+                    <v-text-field
+                      v-model="lastName"
+                      label="Фамилия"
+                      placeholder="Хаджиев"
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      :rules="[v => v.length >= 2 || 'Минимум 2 символа']"
+                    />
+                    <v-text-field
+                      v-model="firstName"
+                      label="Имя"
+                      placeholder="Мухаммад"
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      :rules="[v => v.length >= 2 || 'Минимум 2 символа']"
+                    />
+                    <v-text-field
+                      v-model="patronymic"
+                      label="Отчество"
+                      placeholder="Ахмедович"
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      hint="Необязательно"
+                      persistent-hint
+                      class="mb-1"
+                    />
+                    <v-select
+                      v-model="city"
+                      :items="cities"
+                      label="Город"
+                      placeholder="Выберите город"
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      :rules="[v => !!v || 'Выберите город']"
+                    />
+                    <v-text-field
+                      v-model="phone"
+                      label="Телефон"
+                      placeholder="+7 (928) 000-00-00"
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      prepend-inner-icon="mdi-phone-outline"
+                      :rules="[v => v.length >= 10 || 'Введите номер телефона']"
+                    />
+                    <v-text-field
+                      v-model="email"
+                      label="Email"
+                      placeholder="example@mail.ru"
+                      type="email"
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      prepend-inner-icon="mdi-email-outline"
+                      :rules="[v => emailRegex.test(v) || 'Введите корректный email']"
+                    />
+                  </div>
                 </div>
 
                 <!-- Step 2: Business info -->
@@ -290,60 +309,53 @@ async function submit() {
                     </div>
                     <div>
                       <h3 class="step-title">Опыт и направление</h3>
-                      <p class="step-desc">Помогите нам понять ваш профиль</p>
+                      <p class="step-desc">Расскажите о деятельности компании</p>
                     </div>
+                    <div class="step-counter">2 / 3</div>
                   </div>
 
-                  <v-row>
-                    <v-col cols="12" sm="6">
-                      <v-select
-                        v-model="experience"
-                        :items="experienceOptions"
-                        label="Опыт в рассрочке"
-                        variant="outlined"
-                        density="comfortable"
-                        rounded="lg"
-                        :rules="[v => !!v || 'Выберите опыт']"
-                      />
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-select
-                        v-model="capital"
-                        :items="capitalOptions"
-                        label="Планируемый капитал"
-                        variant="outlined"
-                        density="comfortable"
-                        rounded="lg"
-                        :rules="[v => !!v || 'Выберите капитал']"
-                      />
-                    </v-col>
-                    <v-col cols="12">
-                      <v-select
-                        v-model="categories"
-                        :items="categoryOptions"
-                        label="Категории товаров"
-                        multiple
-                        chips
-                        variant="outlined"
-                        density="comfortable"
-                        rounded="lg"
-                        :rules="[v => v.length > 0 || 'Выберите хотя бы одну категорию']"
-                      />
-                    </v-col>
-                    <v-col cols="12">
-                      <v-textarea
-                        v-model="description"
-                        label="О себе"
-                        placeholder="Расскажите о вашем опыте, планах, чем занимаетесь"
-                        variant="outlined"
-                        density="comfortable"
-                        rounded="lg"
-                        rows="3"
-                        hint="Необязательно"
-                        persistent-hint
-                      />
-                    </v-col>
-                  </v-row>
+                  <div class="form-fields">
+                    <v-select
+                      v-model="experience"
+                      :items="experienceOptions"
+                      label="Опыт в рассрочке"
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      :rules="[v => !!v || 'Выберите опыт']"
+                    />
+                    <v-select
+                      v-model="capital"
+                      :items="capitalOptions"
+                      label="Планируемый капитал"
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      :rules="[v => !!v || 'Выберите капитал']"
+                    />
+                    <v-select
+                      v-model="categories"
+                      :items="categoryOptions"
+                      label="Категории товаров"
+                      multiple
+                      chips
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      :rules="[v => v.length > 0 || 'Выберите хотя бы одну категорию']"
+                    />
+                    <v-textarea
+                      v-model="description"
+                      label="О себе"
+                      placeholder="Расскажите о вашем опыте, планах, чем занимаетесь"
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      rows="3"
+                      hint="Необязательно"
+                      persistent-hint
+                    />
+                  </div>
                 </div>
 
                 <!-- Step 3: Documents -->
@@ -356,55 +368,55 @@ async function submit() {
                       <h3 class="step-title">Документы</h3>
                       <p class="step-desc">Для верификации (можно заполнить позже)</p>
                     </div>
+                    <div class="step-counter">3 / 3</div>
                   </div>
 
-                  <v-row>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="passportSeries"
-                        label="Серия паспорта"
-                        placeholder="2017"
-                        maxlength="4"
-                        variant="outlined"
-                        density="comfortable"
-                        rounded="lg"
-                        hint="Необязательно"
-                        persistent-hint
-                      />
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="passportNumber"
-                        label="Номер паспорта"
-                        placeholder="123456"
-                        maxlength="6"
-                        variant="outlined"
-                        density="comfortable"
-                        rounded="lg"
-                        hint="Необязательно"
-                        persistent-hint
-                      />
-                    </v-col>
-                    <v-col cols="12">
-                      <v-text-field
-                        v-model="inn"
-                        label="ИНН"
-                        placeholder="123456789012"
-                        maxlength="12"
-                        variant="outlined"
-                        density="comfortable"
-                        rounded="lg"
-                        hint="Необязательно"
-                        persistent-hint
-                      />
-                    </v-col>
-                  </v-row>
+                  <div class="form-fields">
+                    <v-text-field
+                      v-model="passportSeries"
+                      label="Серия паспорта"
+                      placeholder="2017"
+                      maxlength="4"
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      hint="Необязательно"
+                      persistent-hint
+                    />
+                    <v-text-field
+                      v-model="passportNumber"
+                      label="Номер паспорта"
+                      placeholder="123456"
+                      maxlength="6"
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      hint="Необязательно"
+                      persistent-hint
+                    />
+                    <v-text-field
+                      v-model="inn"
+                      label="ИНН"
+                      placeholder="123456789012"
+                      maxlength="12"
+                      variant="outlined"
+                      density="comfortable"
+                      rounded="md"
+                      hint="Необязательно"
+                      persistent-hint
+                    />
+                  </div>
 
                   <div class="info-banner">
-                    <v-icon icon="mdi-information-outline" size="20" color="primary" class="flex-shrink-0 mt-1" />
-                    <p class="text-body-2" style="color: #5f7a6b; line-height: 1.6">
-                      Документы нужны для верификации. Вы можете предоставить их позже через личный кабинет после одобрения заявки.
-                    </p>
+                    <div class="info-banner-icon">
+                      <v-icon icon="mdi-shield-check-outline" size="18" color="primary" />
+                    </div>
+                    <div>
+                      <p class="info-banner-title">Данные в безопасности</p>
+                      <p class="info-banner-text">
+                        Документы нужны для верификации. Вы можете предоставить их позже через личный кабинет после одобрения заявки.
+                      </p>
+                    </div>
                   </div>
 
                   <v-checkbox
@@ -412,7 +424,7 @@ async function submit() {
                     color="primary"
                     density="compact"
                     hide-details
-                    class="mt-2"
+                    class="mt-4"
                   >
                     <template #label>
                       <span class="text-body-2" style="color: #5f7a6b">
@@ -430,61 +442,61 @@ async function submit() {
 
               <!-- Actions -->
               <div class="form-actions">
-                <v-btn
+                <button
                   v-if="step > 1"
-                  variant="text"
-                  class="text-none"
-                  color="default"
+                  class="back-btn btn-press"
                   @click="prevStep"
                 >
-                  <v-icon icon="mdi-arrow-left" size="18" class="mr-1" />
+                  <v-icon icon="mdi-arrow-left" size="18" />
                   Назад
-                </v-btn>
-                <v-spacer />
+                </button>
+                <div class="flex-grow-1" />
 
-                <v-btn
+                <button
                   v-if="step < 3"
-                  color="primary"
-                  variant="flat"
-                  class="text-none px-8"
-                  rounded="lg"
-                  size="large"
+                  class="next-btn btn-press"
+                  :class="{ 'next-btn--disabled': (step === 1 && !step1Valid) || (step === 2 && !step2Valid) }"
                   :disabled="(step === 1 && !step1Valid) || (step === 2 && !step2Valid)"
                   @click="nextStep"
                 >
                   Далее
-                  <v-icon icon="mdi-arrow-right" size="18" class="ml-1" />
-                </v-btn>
+                  <v-icon icon="mdi-arrow-right" size="18" />
+                </button>
 
-                <v-btn
+                <button
                   v-else
-                  color="primary"
-                  variant="flat"
-                  class="text-none px-8"
-                  rounded="lg"
-                  size="large"
-                  :disabled="!step3Valid"
-                  :loading="loading"
+                  class="submit-btn btn-press"
+                  :class="{ 'submit-btn--disabled': !step3Valid }"
+                  :disabled="!step3Valid || loading"
                   @click="submit"
                 >
-                  Отправить заявку
-                  <v-icon icon="mdi-send" size="18" class="ml-2" />
-                </v-btn>
+                  <v-progress-circular v-if="loading" indeterminate size="18" width="2" color="white" class="mr-2" />
+                  <template v-else>
+                    Отправить заявку
+                    <v-icon icon="mdi-send" size="16" class="ml-1" />
+                  </template>
+                </button>
               </div>
             </div>
 
             <!-- Trust badges -->
-            <div class="trust-row">
+            <div class="trust-row stagger-4">
               <div class="trust-badge">
-                <v-icon icon="mdi-shield-check-outline" size="18" color="primary" />
+                <div class="trust-icon">
+                  <v-icon icon="mdi-shield-check-outline" size="16" color="primary" />
+                </div>
                 <span>Данные защищены</span>
               </div>
               <div class="trust-badge">
-                <v-icon icon="mdi-clock-outline" size="18" color="primary" />
-                <span>Ответ за 1-3 дня</span>
+                <div class="trust-icon">
+                  <v-icon icon="mdi-clock-fast" size="16" color="primary" />
+                </div>
+                <span>Ответ за 1–3 дня</span>
               </div>
               <div class="trust-badge">
-                <v-icon icon="mdi-currency-rub" size="18" color="primary" />
+                <div class="trust-icon">
+                  <v-icon icon="mdi-cash-remove" size="16" color="primary" />
+                </div>
                 <span>Без комиссий</span>
               </div>
             </div>
@@ -497,6 +509,18 @@ async function submit() {
 </template>
 
 <style scoped>
+/* ============================================================
+   Custom easing curves (Emil Kowalski philosophy)
+   ============================================================ */
+:root {
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ============================================================
+   Page atmosphere
+   ============================================================ */
 .partner-page {
   position: relative;
   overflow: hidden;
@@ -504,70 +528,149 @@ async function submit() {
   min-height: 100vh;
 }
 
-.page-bg {
+.page-atmosphere {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse at 30% 0%, rgba(4, 120, 87, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 100%, rgba(15, 118, 110, 0.04) 0%, transparent 40%);
+  pointer-events: none;
+  overflow: hidden;
 }
 
-.page-glow {
+.atm-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.3;
-  pointer-events: none;
+  filter: blur(120px);
+  opacity: 0;
+  transition: opacity 1.2s ease;
 }
 
-.page-glow--1 {
-  width: 600px;
-  height: 600px;
-  top: -150px;
-  left: -200px;
-  background: rgba(16, 185, 129, 0.15);
+.is-mounted .atm-orb {
+  opacity: 1;
 }
 
-.page-glow--2 {
+.atm-orb--1 {
+  width: 700px;
+  height: 700px;
+  top: -200px;
+  left: -250px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.14) 0%, transparent 70%);
+  animation: orbFloat1 18s ease-in-out infinite;
+}
+
+.atm-orb--2 {
   width: 500px;
   height: 500px;
   bottom: -100px;
   right: -200px;
-  background: rgba(15, 118, 110, 0.1);
+  background: radial-gradient(circle, rgba(15, 118, 110, 0.1) 0%, transparent 70%);
+  animation: orbFloat2 22s ease-in-out infinite;
 }
 
+.atm-orb--3 {
+  width: 300px;
+  height: 300px;
+  top: 40%;
+  right: 10%;
+  background: radial-gradient(circle, rgba(4, 120, 87, 0.06) 0%, transparent 70%);
+  animation: orbFloat3 14s ease-in-out infinite;
+}
+
+.atm-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(4, 120, 87, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(4, 120, 87, 0.02) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 70%);
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(30px, 20px); }
+  66% { transform: translate(-20px, 10px); }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-25px, -15px); }
+}
+
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(15px, -20px); }
+}
+
+/* ============================================================
+   Stagger entrance animations
+   ============================================================ */
+.stagger-1, .stagger-2, .stagger-3, .stagger-4 {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--ease-out-strong), transform 0.6s var(--ease-out-strong);
+  margin-bottom: 24px;
+}
+
+.is-mounted .stagger-1 { opacity: 1; transform: translateY(0); transition-delay: 0ms; }
+.is-mounted .stagger-2 { opacity: 1; transform: translateY(0); transition-delay: 80ms; }
+.is-mounted .stagger-3 { opacity: 1; transform: translateY(0); transition-delay: 160ms; }
+.is-mounted .stagger-4 { opacity: 1; transform: translateY(0); transition-delay: 240ms; }
+
+/* ============================================================
+   Button press feedback (Emil: scale 0.97 on :active)
+   ============================================================ */
+.btn-press {
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-press:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.btn-press:active {
+  transform: scale(0.97);
+}
+
+/* ============================================================
+   Typography
+   ============================================================ */
 .page-title {
   font-size: 2.5rem;
   font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
   color: #0c1a12;
 }
 
 @media (min-width: 960px) {
   .page-title {
-    font-size: 3rem;
+    font-size: 3.2rem;
   }
 }
 
 .page-subtitle {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   line-height: 1.7;
   color: #5f7a6b;
   max-width: 440px;
   margin: 0 auto;
 }
 
-/* Stepper */
+/* ============================================================
+   Stepper
+   ============================================================ */
 .stepper-wrap {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
 }
 
 .stepper {
   display: flex;
   align-items: center;
-  gap: 0;
 }
 
 .step-item {
@@ -579,7 +682,6 @@ async function submit() {
   border: none;
   cursor: default;
   padding: 0 4px;
-  transition: all 0.3s ease;
 }
 
 .step-item--done {
@@ -589,21 +691,21 @@ async function submit() {
 .step-circle {
   width: 44px;
   height: 44px;
-  border-radius: 12px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #e8f5ee;
   color: #94a3b8;
   border: 2px solid #e2efe8;
-  transition: all 0.3s ease;
+  transition: all 0.35s var(--ease-out-strong);
 }
 
 .step-item--active .step-circle {
   background: #047857;
   color: white;
   border-color: #047857;
-  box-shadow: 0 4px 16px rgba(4, 120, 87, 0.3);
+  box-shadow: 0 6px 20px rgba(4, 120, 87, 0.3), 0 0 0 4px rgba(4, 120, 87, 0.08);
 }
 
 .step-item--done .step-circle {
@@ -635,7 +737,9 @@ async function submit() {
   margin: 0 8px;
   margin-bottom: 24px;
   border-radius: 1px;
-  transition: background 0.3s ease;
+  transition: background 0.4s var(--ease-out-strong);
+  position: relative;
+  overflow: hidden;
 }
 
 .step-connector--done {
@@ -648,21 +752,61 @@ async function submit() {
   }
 }
 
-/* Form Card */
+/* Progress bar under stepper */
+.stepper-progress {
+  width: 200px;
+  height: 3px;
+  background: #e2efe8;
+  border-radius: 2px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+
+.stepper-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #047857, #10b981);
+  border-radius: 2px;
+  transition: width 0.5s var(--ease-out-strong);
+}
+
+/* ============================================================
+   Form Card
+   ============================================================ */
 .form-card {
   background: white;
-  border: 1px solid #e2efe8;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 32px rgba(4, 120, 87, 0.04);
+  border: 1px solid rgba(4, 120, 87, 0.08);
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.03),
+    0 4px 16px rgba(0, 0, 0, 0.03),
+    0 16px 48px rgba(4, 120, 87, 0.04);
+  transition: box-shadow 0.4s ease;
 }
 
 @media (min-width: 960px) {
   .form-card {
-    padding: 40px;
+    padding: 36px;
   }
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .form-card:hover {
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.03),
+      0 4px 16px rgba(0, 0, 0, 0.04),
+      0 24px 64px rgba(4, 120, 87, 0.06);
+  }
+}
+
+/* Form fields — single column */
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Step header */
 .step-header {
   display: flex;
   align-items: flex-start;
@@ -673,10 +817,10 @@ async function submit() {
 }
 
 .step-header-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: #e8f5ee;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #e8f5ee, #d1fae5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -688,6 +832,7 @@ async function submit() {
   font-weight: 700;
   color: #0c1a12;
   margin-bottom: 2px;
+  letter-spacing: -0.01em;
 }
 
 .step-desc {
@@ -695,17 +840,58 @@ async function submit() {
   color: #5f7a6b;
 }
 
+.step-counter {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 700;
+  color: #047857;
+  background: #e8f5ee;
+  padding: 4px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
 /* Info banner */
 .info-banner {
   display: flex;
-  gap: 12px;
-  padding: 16px;
-  background: #f0f7f3;
-  border-radius: 12px;
-  margin-top: 4px;
+  gap: 14px;
+  padding: 18px;
+  background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+  border: 1px solid rgba(4, 120, 87, 0.08);
+  border-radius: 8px;
+  margin-top: 8px;
 }
 
-/* Actions */
+.info-banner-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.info-banner-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #047857;
+  margin-bottom: 2px;
+}
+
+.info-banner-text {
+  font-size: 13px;
+  color: #5f7a6b;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Custom action buttons
+   ============================================================ */
 .form-actions {
   display: flex;
   align-items: center;
@@ -714,85 +900,182 @@ async function submit() {
   border-top: 1px solid #f0f7f3;
 }
 
-/* Trust badges */
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #5f7a6b;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 160ms var(--ease-out-strong);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .back-btn:hover {
+    background: #f0f7f3;
+    color: #0c1a12;
+  }
+}
+
+.next-btn,
+.submit-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(135deg, #047857, #059669);
+  box-shadow: 0 2px 8px rgba(4, 120, 87, 0.25), 0 0 0 0 rgba(4, 120, 87, 0);
+  transition: box-shadow 0.3s ease, opacity 0.2s ease, transform 160ms var(--ease-out-strong);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .next-btn:not(.next-btn--disabled):hover,
+  .submit-btn:not(.submit-btn--disabled):hover {
+    box-shadow: 0 4px 16px rgba(4, 120, 87, 0.35), 0 0 0 3px rgba(4, 120, 87, 0.08);
+  }
+}
+
+.next-btn--disabled,
+.submit-btn--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ============================================================
+   Trust badges
+   ============================================================ */
 .trust-row {
   display: flex;
   justify-content: center;
-  gap: 24px;
-  margin-top: 24px;
+  gap: 20px;
+  margin-top: 28px;
   flex-wrap: wrap;
 }
 
 .trust-badge {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-size: 13px;
   color: #5f7a6b;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-/* Success */
+.trust-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(4, 120, 87, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================
+   Success state
+   ============================================================ */
 .success-card {
   text-align: center;
   background: white;
-  border: 1px solid #e2efe8;
-  border-radius: 16px;
-  padding: 48px 32px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 32px rgba(4, 120, 87, 0.04);
+  border: 1px solid rgba(4, 120, 87, 0.08);
+  border-radius: 12px;
+  padding: 48px 28px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.03),
+    0 16px 48px rgba(4, 120, 87, 0.06);
 }
 
-.success-icon-wrap {
-  width: 72px;
-  height: 72px;
+.success-ring {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(4, 120, 87, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 28px;
+  animation: successPulse 2s ease-in-out infinite;
+}
+
+.success-ring-inner {
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: linear-gradient(135deg, #10b981, #047857);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
-  box-shadow: 0 8px 24px rgba(4, 120, 87, 0.3);
+  box-shadow: 0 8px 28px rgba(4, 120, 87, 0.35);
 }
 
-/* Transitions */
-.slide-fade-enter-active {
-  transition: all 0.3s ease;
+@keyframes successPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
 }
 
-.slide-fade-leave-active {
-  transition: all 0.2s ease;
+.success-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0c1a12;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
 }
 
-.slide-fade-enter-from {
+.success-text {
+  font-size: 1rem;
+  color: #5f7a6b;
+  line-height: 1.7;
+  max-width: 400px;
+  margin: 0 auto 32px;
+}
+
+/* ============================================================
+   Step transitions (Emil: ease-out, never from scale(0))
+   ============================================================ */
+.step-transition-enter-active {
+  transition: opacity 0.25s var(--ease-out-strong), transform 0.25s var(--ease-out-strong);
+}
+
+.step-transition-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.step-transition-enter-from {
   opacity: 0;
-  transform: translateX(20px);
+  transform: translateX(16px);
 }
 
-.slide-fade-leave-to {
+.step-transition-leave-to {
   opacity: 0;
-  transform: translateX(-20px);
+  transform: translateX(-12px);
 }
 
-.fade-up-enter-active {
-  transition: all 0.4s ease;
-}
-
-.fade-up-enter-from {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-/* Section chip (from global styles) */
+/* ============================================================
+   Section chip + text-gradient (inherited from global)
+   ============================================================ */
 .section-chip {
   display: inline-flex;
   align-items: center;
-  padding: 6px 14px;
+  padding: 6px 16px;
   border-radius: 100px;
   background: #e8f5ee;
   color: #047857;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
+  border: 1px solid rgba(4, 120, 87, 0.1);
 }
 
 .text-gradient {
@@ -800,5 +1083,34 @@ async function submit() {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ============================================================
+   Reduced motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .stagger-1, .stagger-2, .stagger-3, .stagger-4 {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .atm-orb {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  .success-ring {
+    animation: none;
+  }
+
+  .step-transition-enter-active,
+  .step-transition-leave-active {
+    transition-duration: 0ms;
+  }
+
+  .btn-press {
+    transition: none;
+  }
 }
 </style>

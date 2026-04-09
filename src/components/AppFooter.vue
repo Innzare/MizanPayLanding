@@ -8,7 +8,7 @@
             <img src="@/assets/images/logo-text.svg" alt="MizanPay" class="footer-logo-text" />
           </div>
           <p class="footer-desc">
-            Платформа для инвесторов, которые продают товары в рассрочку
+            Платформа для компаний, которые продают товары в рассрочку
             по принципу мурабахи — без процентов.
           </p>
 
@@ -40,7 +40,7 @@
         <v-col cols="6" md="2">
           <div class="footer-heading">Партнёрам</div>
           <div class="d-flex flex-column ga-2">
-            <router-link to="/partner" class="footer-link">Стать инвестором</router-link>
+            <router-link to="/partner" class="footer-link">Стать партнёром</router-link>
             <a href="#for-investors" class="footer-link">Преимущества</a>
           </div>
         </v-col>

@@ -31,6 +31,13 @@
           </div>
         </v-col>
       </v-row>
+
+      <div class="text-center mt-10 animate-fade-in-up delay-5">
+        <v-btn to="/partner" color="primary" size="large" class="text-none px-8" rounded="pill">
+          Зарегистрировать компанию
+          <v-icon icon="mdi-arrow-right" class="ml-2" />
+        </v-btn>
+      </div>
     </v-container>
   </section>
 </template>
@@ -38,8 +45,8 @@
 <script lang="ts" setup>
 const steps = [
   {
-    title: 'Регистрация',
-    description: 'Подайте заявку на партнёрство и получите доступ к личному кабинету.',
+    title: 'Регистрация компании',
+    description: 'Подайте заявку и получите доступ к личному кабинету для вашей команды.',
   },
   {
     title: 'Создайте сделку',

@@ -94,6 +94,22 @@
           </div>
         </v-col>
       </v-row>
+
+      <!-- CTA -->
+      <div class="text-center mt-14 animate-fade-in-up">
+        <p class="text-body-1 text-muted-custom mb-5" style="max-width: 480px; margin: 0 auto; line-height: 1.7;">
+          Всё это доступно сразу после регистрации. Начните управлять рассрочками профессионально.
+        </p>
+        <div class="d-flex justify-center ga-3 flex-wrap">
+          <v-btn to="/partner" color="primary" size="large" class="text-none px-8" rounded="pill">
+            Зарегистрировать компанию
+            <v-icon icon="mdi-arrow-right" class="ml-2" />
+          </v-btn>
+          <v-btn href="https://partner.mizan-pay.ru" target="_blank" variant="outlined" color="primary" size="large" class="text-none px-8" rounded="pill">
+            Войти в кабинет
+          </v-btn>
+        </div>
+      </div>
     </v-container>
   </section>
 </template>
