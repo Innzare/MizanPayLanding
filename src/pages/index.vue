@@ -6,6 +6,7 @@
     <FeaturesSection />
     <HowItWorksSection />
     <CalculatorSection />
+    <PricingSection />
     <ForInvestorsSection />
     <TrustSection />
     <CtaSection />

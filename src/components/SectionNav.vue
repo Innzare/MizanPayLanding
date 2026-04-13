@@ -5,6 +5,7 @@ const sections = [
   { id: 'features', label: 'Возможности' },
   { id: 'how-it-works', label: 'Процесс' },
   { id: 'calculator', label: 'Калькулятор' },
+  { id: 'pricing', label: 'Тарифы' },
   { id: 'for-investors', label: 'Партнёрам' },
   { id: 'trust', label: 'Доверие' },
   { id: 'cta', label: 'Начать' },
