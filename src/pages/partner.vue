@@ -18,6 +18,7 @@ const firstName = ref('')
 const lastName = ref('')
 const patronymic = ref('')
 const phone = ref('')
+const phoneUnmasked = ref('')
 const email = ref('')
 const city = ref('')
 
@@ -107,7 +108,7 @@ async function submit() {
       firstName: firstName.value,
       lastName: lastName.value,
       patronymic: patronymic.value,
-      phone: phone.value,
+      phone: phoneUnmasked.value ? `+${phoneUnmasked.value}` : phone.value,
       email: email.value,
       city: city.value,
       experience: experience.value,
@@ -279,13 +280,15 @@ async function submit() {
                     />
                     <v-text-field
                       v-model="phone"
+                      v-maska="'+7 (###) ###-##-##'"
                       label="Телефон"
                       placeholder="+7 (928) 000-00-00"
                       variant="outlined"
                       density="comfortable"
                       rounded="md"
                       prepend-inner-icon="mdi-phone-outline"
-                      :rules="[v => v.length >= 10 || 'Введите номер телефона']"
+                      :rules="[v => v.length >= 18 || 'Введите номер телефона']"
+                      @maska="(e: any) => phoneUnmasked.value = e.detail?.unmasked || ''"
                     />
                     <v-text-field
                       v-model="email"
@@ -374,9 +377,10 @@ async function submit() {
                   <div class="form-fields">
                     <v-text-field
                       v-model="passportSeries"
+                      v-maska="'####'"
                       label="Серия паспорта"
                       placeholder="2017"
-                      maxlength="4"
+                      inputmode="numeric"
                       variant="outlined"
                       density="comfortable"
                       rounded="md"
@@ -385,9 +389,10 @@ async function submit() {
                     />
                     <v-text-field
                       v-model="passportNumber"
+                      v-maska="'######'"
                       label="Номер паспорта"
                       placeholder="123456"
-                      maxlength="6"
+                      inputmode="numeric"
                       variant="outlined"
                       density="comfortable"
                       rounded="md"
@@ -396,9 +401,10 @@ async function submit() {
                     />
                     <v-text-field
                       v-model="inn"
+                      v-maska="'############'"
                       label="ИНН"
                       placeholder="123456789012"
-                      maxlength="12"
+                      inputmode="numeric"
                       variant="outlined"
                       density="comfortable"
                       rounded="md"

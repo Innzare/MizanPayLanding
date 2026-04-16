@@ -12,6 +12,7 @@ import App from './App.vue'
 
 // Composables
 import { createApp } from 'vue'
+import { vMaska } from 'maska/vue'
 
 // Styles
 import 'unfonts.css'
@@ -19,5 +20,7 @@ import 'unfonts.css'
 const app = createApp(App)
 
 registerPlugins(app)
+
+app.directive('maska', vMaska)
 
 app.mount('#app')
