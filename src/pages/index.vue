@@ -6,6 +6,7 @@
     <FeaturesSection />
     <HowItWorksSection />
     <CalculatorSection />
+    <ZakatSection />
     <PricingSection />
     <ForInvestorsSection />
     <TrustSection />

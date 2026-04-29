@@ -25,5 +25,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SectionNav: typeof import('./components/SectionNav.vue')['default']
     TrustSection: typeof import('./components/TrustSection.vue')['default']
+    ZakatSection: typeof import('./components/ZakatSection.vue')['default']
   }
 }
