@@ -48,18 +48,16 @@
 
           <!-- Store links -->
           <div class="hero-store-links mb-12">
-            <a href="#" class="store-badge">
+            <a
+              href="https://apps.apple.com/tr/app/mizan-crm/id6768300146"
+              target="_blank"
+              rel="noopener"
+              class="store-badge"
+            >
               <v-icon icon="mdi-apple" size="22" />
               <div>
                 <div class="store-badge-label">Загрузить в</div>
                 <div class="store-badge-name">App Store</div>
-              </div>
-            </a>
-            <a href="#" class="store-badge">
-              <v-icon icon="mdi-google-play" size="22" />
-              <div>
-                <div class="store-badge-label">Доступно в</div>
-                <div class="store-badge-name">Google Play</div>
               </div>
             </a>
             <a href="https://partner.mizan-pay.ru" target="_blank" class="store-badge">

@@ -13,13 +13,14 @@
           </p>
 
           <div class="footer-store-links">
-            <a href="#" class="footer-store-badge">
+            <a
+              href="https://apps.apple.com/tr/app/mizan-crm/id6768300146"
+              target="_blank"
+              rel="noopener"
+              class="footer-store-badge"
+            >
               <v-icon icon="mdi-apple" size="18" />
               <span>App Store</span>
-            </a>
-            <a href="#" class="footer-store-badge">
-              <v-icon icon="mdi-google-play" size="18" />
-              <span>Google Play</span>
             </a>
             <a href="https://partner.mizan-pay.ru" target="_blank" class="footer-store-badge">
               <v-icon icon="mdi-monitor" size="18" />
